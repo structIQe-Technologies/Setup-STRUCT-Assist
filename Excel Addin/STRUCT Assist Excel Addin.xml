@@ -1,0 +1,104 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+STRUCT Assist Excel Addin
+</name>
+</assembly>
+<members>
+<member name="T:structIQe_Excel_Addin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:structIQe_Excel_Addin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:structIQe_Excel_Addin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:structIQe_Excel_Addin.My.Resources.Resources.icons8_autocad_dxf_file_96">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:structIQe_Excel_Addin.My.Resources.Resources.Loading_icon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:structIQe_Excel_Addin.My.Resources.Resources.STRUCT_Assist_Logo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:structIQe_Excel_Addin.ThisRibbonCollection">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisRibbonCollection.#ctor(Microsoft.Office.Tools.Ribbon.RibbonFactory)">
+
+</member>
+<member name="T:structIQe_Excel_Addin.ThisAddIn">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.#ctor(Microsoft.Office.Tools.Excel.ApplicationFactory,System.IServiceProvider)">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.Initialize">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.FinishInitialization">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.InitializeDataBindings">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.InitializeCachedData">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.InitializeData">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.BindToData">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.StartCaching(System.String)">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.StopCaching(System.String)">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.IsCached(System.String)">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.BeginInitialization">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.EndInitialization">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.InitializeControls">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.InitializeComponents">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.NeedsFill(System.String)">
+
+</member>
+<member name="M:structIQe_Excel_Addin.ThisAddIn.OnShutdown">
+
+</member>
+<member name="T:structIQe_Excel_Addin.Globals">
+
+</member>
+<member name="M:structIQe_Excel_Addin.Globals.#ctor">
+
+</member>
+</members>
+</doc>
