@@ -1,0 +1,270 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+stqcolibv2
+</name>
+</assembly>
+<members>
+<member name="T:structIQe_Web_Library.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:structIQe_Web_Library.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:structIQe_Web_Library.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseHelper.MarkInProgressAsync(System.Guid)">
+ <summary>
+ Call this immediately when the desktop picks up an action,
+ before doing any real work. Prevents double-processing if
+ the polling loop runs again before the action completes.
+ </summary>
+</member>
+<member name="F:structIQe_Web_Library.SupabaseProxy.ProxyBaseUrl">
+ <summary>
+ Base URL of the Vercel-deployed Express proxy.
+ All Supabase traffic is routed through this endpoint.
+ </summary>
+</member>
+<member name="T:structIQe_Web_Library.SupabaseProxy.ProxyLoginResult">
+ <summary>
+ Result from proxy auth calls. Extends the concept of SupabaseLoginResult
+ with additional fields returned by the proxy (user profile, access map).
+ </summary>
+</member>
+<member name="P:structIQe_Web_Library.SupabaseProxy.ProxyLoginResult.User">
+ <summary>User profile from the proxy: id, email, name, company_id, company_name</summary>
+</member>
+<member name="P:structIQe_Web_Library.SupabaseProxy.ProxyLoginResult.AccessByModule">
+ <summary>Module access map (e.g., { "home": true, "mails": true })</summary>
+</member>
+<member name="P:structIQe_Web_Library.SupabaseProxy.ProxyLoginResult.AllowedModules">
+ <summary>Allowed navigation modules (filtered by user's access)</summary>
+</member>
+<member name="T:structIQe_Web_Library.SupabaseProxy.ProxyUser">
+ <summary>
+ User profile shape returned by the proxy /api/auth/signin and /api/auth/me endpoints.
+ </summary>
+</member>
+<member name="F:structIQe_Web_Library.SupabaseProxy.Http">
+ <summary>
+ Shared HttpClient for proxy calls. No apikey header — the proxy handles
+ Supabase authentication server-side. Authorization header is set per-request.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SignInAsync(System.String,System.String)">
+ <summary>
+ Authenticate via the proxy. Sends email + password to POST /api/auth/signin.
+ The proxy authenticates against Supabase and returns tokens + user profile.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetMeAsync">
+ <summary>
+ Verify the current session and fetch user profile via GET /api/auth/me.
+ Sends the stored access token as a Bearer token in the Authorization header.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SignOutAsync">
+ <summary>
+ Sign out via the proxy. Sends the access token to POST /api/auth/signout
+ for server-side revocation, then clears the local session.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.RefreshAsync(System.String)">
+ <summary>
+ Refresh an expired session via the proxy. Sends the refresh token to POST /api/auth/refresh.
+ Returns a new SupabaseSession with fresh tokens, or Nothing on failure.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.ChangeMyPasswordAsync(System.String,System.String,System.String)">
+ <summary>
+ Change the current user's password via the proxy.
+ Re-authenticates with old password server-side, then patches the new password.
+ Throws on failure (caller catches).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.TryAutoLoginAsync">
+ <summary>
+ Attempt auto-login using saved sessions from SecureStore.
+ Mirrors SupabaseHelper.TryAutoLoginAsync but routes all network calls through the proxy.
+ Uses SupabaseProxy.RefreshAsync and SupabaseProxy.GetMeAsync instead of direct Supabase calls.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SwitchToSessionByUserIdAsync(System.String,System.Boolean)">
+ <summary>
+ Switch to an existing saved session by user ID. Refreshes via proxy if expired.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SwitchToSessionAsync(structIQe_Web_Library.SupabaseHelper.SupabaseSession,System.Boolean)">
+ <summary>
+ Switch to a specific session. If the token is expired, refreshes it via the proxy.
+ Mirrors SupabaseHelper.SwitchToSessionAsync but uses SupabaseProxy.RefreshAsync.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SignOutUserAsync(System.String)">
+ <summary>
+ Sign out a specific user by userId.
+ If it's the current user, delegates to SignOutAsync().
+ Otherwise, best-effort revokes and removes from AllSessions + SecureStore.
+ Mirrors Auth.vb SignOutUserAsync (lines 1131-1152).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.SignOutAllAsync">
+ <summary>
+ Sign out ALL cached sessions.
+ Best-effort revokes each token via proxy, then wipes SecureStore.
+ Mirrors Auth.vb SignOutAllAsync (lines 1155-1167).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.RestRequestAsync(System.Net.Http.HttpMethod,System.String,System.String,System.String)">
+ <summary>
+ Send a request to the PostgREST passthrough proxy at /api/rest/{tablePath}.
+ Automatically retries once on 401 after refreshing the access token.
+ Returns the raw JSON response body as a String.
+ </summary>
+ <param name="method">HTTP method (GET, POST, PATCH, DELETE).</param>
+ <param name="tablePath">PostgREST path + query string, e.g. "companies?id=eq.xxx&amp;select=name".</param>
+ <param name="body">Optional JSON body for POST/PATCH/PUT.</param>
+ <param name="prefer">Optional Prefer header value (e.g. "return=representation").</param>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.RestRequestCoreAsync(System.Net.Http.HttpMethod,System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ Internal: send a single request to the proxy.  Returns success flag, status code, and body.
+ </summary>
+</member>
+<member name="T:structIQe_Web_Library.SupabaseProxy.RestResult">
+ <summary>Simple result tuple for RestRequestCoreAsync / ServiceRequestCoreAsync.</summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.ServiceRequestAsync(System.String,System.Net.Http.HttpMethod,System.String,System.String)">
+ <summary>
+ Send a request to a module-specific service endpoint (e.g. /api/access/me).
+ Automatically retries once on 401 after refreshing the access token.
+ </summary>
+ <param name="baseUrl">Service base URL (ProxyBaseUrl or LicenseBaseUrl).</param>
+ <param name="method">HTTP method (GET, POST, PATCH, DELETE).</param>
+ <param name="path">API path, e.g. "/api/access/me" or "/api/actions/pending?companyId=...".</param>
+ <param name="body">Optional JSON body for POST/PATCH.</param>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetMyEffectiveAccessAsync">
+ <summary>
+ Get effective access for the authenticated user (server extracts userId from token).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.PollMyPendingActionsAsync(System.Guid,System.Guid,System.Int32)">
+ <summary>
+ Poll pending employee actions for a given company + employee.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetMyRequestedActionsAsync(System.Guid,System.Guid,System.String)">
+ <summary>
+ Get actions requested by a specific employee.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.EnqueueActionAsync(System.Guid,System.Guid,System.String,System.Object,System.Nullable{System.Guid})">
+ <summary>
+ Insert a new employee action. Returns the new action id.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.PatchStatusAsync(System.Guid,System.String,System.String)">
+ <summary>
+ Update the status (and optional error_message) of an employee action.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetSoftwaresOrderedAsync">
+ <summary>
+ GET /api/licenses/softwares → returns key, name, software_order, version ordered by software_order ASC
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetAllSoftwares_ForDownloadAsync">
+ <summary>
+ SELECT full columns FROM soft_softwares ORDER BY software_order ASC (for software downloads).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.GetCompanyModuleTreeCacheByCompanyIdAsync(System.Guid)">
+ <summary>
+ SELECT tree_json FROM company_module_tree_cache WHERE company_id = {companyId} LIMIT 1
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.SupabaseProxy.MapErrorToUserMessage(System.Int32,System.String)">
+ <summary>
+ Map HTTP status codes and server error messages to friendly UI messages.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.ListAsync(System.Boolean)">
+ <summary>
+ List workspaces for the current company. Active-only by default.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.GetByIdAsync(System.Guid)">
+ <summary>
+ Get a single workspace by ID.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.CreateAsync(System.String,System.String)">
+ <summary>
+ Create a new workspace. Returns the created row (or existing if same name+path).
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.UpdateAsync(System.Guid,System.String,System.String)">
+ <summary>
+ Update workspace name and/or path. Pass Nothing to leave unchanged.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.SetActiveAsync(System.Guid,System.Boolean)">
+ <summary>
+ Activate or deactivate a workspace.
+ </summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.CompanyWorkspaceService.DeleteAsync(System.Guid)">
+ <summary>
+ Delete a workspace. Returns True on success.
+ </summary>
+</member>
+<member name="T:structIQe_Web_Library.structIQe_Web_Library.ProjectGroupsCacheResponse">
+ <summary>
+ Internal wrapper — pa_3002 returns { success: true, data: { ... } }.
+ </summary>
+</member>
+<member name="P:structIQe_Web_Library.structIQe_Web_Library.ProjectEntry.DisplayText">
+ <summary>ComboBox display: "PRJ-001 My Project"</summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.PgProject.LoadAsync(System.Guid)">
+ <summary>Load a single project by ID via the PostgREST passthrough.</summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.PgProject.SaveAsync(structIQe_Web_Library.structIQe_Web_Library.PgProject)">
+ <summary>Upsert (insert or update) a project via the PostgREST passthrough.</summary>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.ProjectGroupService.GetProjectGroupsCacheAsync(System.Collections.Generic.List{System.String},System.Boolean,System.Boolean,System.Boolean)">
+ <summary>
+ Fetch the project groups cache for the authenticated user's company.
+ Calls GET /api/project-groups/cache on pa_3002.
+ </summary>
+ <param name="statusFilters">Project statuses to include. Defaults to {"ONGOING"}.</param>
+ <param name="includeSubjects">Include subject matters per project.</param>
+ <param name="includePaths">Include working/confidential directory paths per project.</param>
+ <param name="includeProjectSettings">Include group-level settings (project, quality, mail, drawing).</param>
+</member>
+<member name="M:structIQe_Web_Library.structIQe_Web_Library.ProjectGroupService.GetProjectPathsAsync(System.Guid)">
+ <summary>
+ Fetch working_directory and confidential_directory for a single project.
+ Uses the PostgREST passthrough to query view_pg_projects_paths.
+ </summary>
+</member>
+<member name="F:structIQe_Web_Library.User_Login.Login_window">
+ <summary>
+ '''''' to ensure we can login multiple users in same session.
+ 
+ </summary>
+ 
+</member>
+</members>
+</doc>
